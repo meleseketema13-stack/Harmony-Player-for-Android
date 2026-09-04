@@ -1,0 +1,207 @@
+{
+  "@@locale": "en",
+  "playButton": "Play",
+  "pauseButton": "Pause",
+  "nextButton": "Next track",
+  "previousButton": "Previous track",
+  "shuffleButton": "Shuffle",
+  "repeatButton": "Repeat",
+  "repeatOff": "Repeat off",
+  "repeatAll": "Repeat all",
+  "repeatOne": "Repeat one",
+  "favoriteButton": "Favorite",
+  "toggleFavorite": "Toggle favorite",
+  "addToPlaylist": "Add to playlist",
+  "jumpForward": "Jump forward {interval}",
+  "@jumpForward": {
+    "placeholders": {
+      "interval": {
+        "type": "String"
+      }
+    }
+  },
+  "jumpBackward": "Jump backward {interval}",
+  "@jumpBackward": {
+    "placeholders": {
+      "interval": {
+        "type": "String"
+      }
+    }
+  },
+  "seekInterval10s": "10 seconds",
+  "seekInterval30s": "30 seconds",
+  "seekInterval1m": "1 minute",
+  "seekInterval10m": "10 minutes",
+  "seekInterval30m": "30 minutes",
+  "seekInterval60m": "60 minutes",
+  "seekIntervalSeconds": "{seconds} seconds",
+  "@seekIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "seekInterval10sShort": "10 sec",
+  "seekInterval30sShort": "30 sec",
+  "seekInterval1mShort": "1 min",
+  "seekInterval10mShort": "10 min",
+  "seekInterval30mShort": "30 min",
+  "seekInterval60mShort": "60 min",
+  "seekIntervalSetting": "Seek interval",
+  "seekIntervalSettingHint": "How far the fast-forward and rewind buttons jump",
+  "minimizePlayer": "Minimize player",
+  "seekBarLabel": "Seek bar",
+  "seekHint": "Swipe up or down to adjust",
+  "nowPlaying": "Now playing",
+  "library": "Library",
+  "search": "Search",
+  "settings": "Settings",
+  "moreOptions": "More options",
+  "albumArt": "Album art for {title}",
+  "@albumArt": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "announcePlayingTrack": "Playing: {title} by {artist}",
+  "@announcePlayingTrack": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "artist": {
+        "type": "String"
+      }
+    }
+  },
+  "announcePausedTrack": "Paused: {title} by {artist}",
+  "@announcePausedTrack": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "artist": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSeekPercent": "Seek bar, {percent} percent, swipe up or down to adjust",
+  "@announceSeekPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "announceShuffleOn": "Shuffle on",
+  "announceShuffleOff": "Shuffle off",
+  "announceRepeatOff": "Repeat off",
+  "announceRepeatAll": "Repeat all",
+  "announceRepeatOne": "Repeat one",
+  "announceFavoriteOn": "Added to favorites",
+  "announceFavoriteOff": "Removed from favorites",
+  "announceAddedToPlaylist": "Added to playlist",
+  "announcePlayerMinimized": "Player minimized",
+  "announceError": "Unable to play: {title}",
+  "@announceError": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownTrack": "Unknown track",
+  "unknownArtist": "Unknown artist",
+  "lyricsEmpty": "No lyrics available for this track",
+  "lyricsHeader": "Lyrics",
+  "emptyLibrary": "No music found on this device.",
+  "emptySearch": "Type to search your library.",
+  "noResults": "No tracks match your search.",
+  "noFavorites": "No favorite tracks yet.",
+  "loadingLibrary": "Loading your library…",
+  "permissionRequiredTitle": "Music access needed",
+  "permissionRequiredBody": "HarmonyPlayer needs permission to read the audio files on this device.",
+  "grantAccessButton": "Grant access",
+  "retryButton": "Retry",
+  "searchHint": "Search tracks, artists or albums",
+  "sortBy": "Sort tracks",
+  "sortByTitle": "Title",
+  "sortByArtist": "Artist",
+  "sortByAlbum": "Album",
+  "sortByDuration": "Duration",
+  "favoritesOnly": "Favorites only",
+  "trackCount": "{count, plural, =1{1 track} other{{count} tracks}}",
+  "@trackCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contentFirstOrder": "Screen reader reads content before navigation",
+  "contentFirstOrderHint": "Changes the reading order for screen readers on large screens",
+  "favorites": "Favorites",
+  "folders": "Folders",
+  "albums": "Albums",
+  "artists": "Artists",
+  "genres": "Genres",
+  "playlists": "Playlists",
+  "tracks": "Tracks",
+  "sleepTimer": "Sleep timer",
+  "sleepTimerHint": "Automatically pause playback after a set duration",
+  "sleepTimerOff": "Off",
+  "sleepTimerActive": "Sleep timer: {duration}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSleepTimerSet": "Sleep timer set for {duration}",
+  "@announceSleepTimerSet": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSleepTimerCancelled": "Sleep timer cancelled",
+  "noFolders": "No folders with audio files found.",
+  "noAlbums": "No albums found.",
+  "noArtists": "No artists found.",
+  "noGenres": "No genres found.",
+  "emptyPlaylists": "Your playlist is empty.",
+  "folderPlay": "Play folder",
+  "albumCount": "{count, plural, =1{1 album} other{{count} albums}}",
+  "@albumCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "artistCount": "{count, plural, =1{1 artist} other{{count} artists}}",
+  "@artistCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "genreCount": "{count, plural, =1{1 genre} other{{count} genres}}",
+  "@genreCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accessibility": "Accessibility",
+  "accessibilityHint": "Screen reader and display preferences",
+  "playback": "Playback",
+  "playbackHint": "Seek intervals and playback preferences"
+}

@@ -1,0 +1,207 @@
+{
+  "@@locale": "zh",
+  "playButton": "播放",
+  "pauseButton": "暂停",
+  "nextButton": "下一首",
+  "previousButton": "上一首",
+  "shuffleButton": "随机播放",
+  "repeatButton": "循环播放",
+  "repeatOff": "关闭循环",
+  "repeatAll": "列表循环",
+  "repeatOne": "单曲循环",
+  "favoriteButton": "收藏",
+  "toggleFavorite": "切换收藏",
+  "addToPlaylist": "添加到播放列表",
+  "jumpForward": "快进 {interval}",
+  "@jumpForward": {
+    "placeholders": {
+      "interval": {
+        "type": "String"
+      }
+    }
+  },
+  "jumpBackward": "快退 {interval}",
+  "@jumpBackward": {
+    "placeholders": {
+      "interval": {
+        "type": "String"
+      }
+    }
+  },
+  "seekInterval10s": "10 秒",
+  "seekInterval30s": "30 秒",
+  "seekInterval1m": "1 分钟",
+  "seekInterval10m": "10 分钟",
+  "seekInterval30m": "30 分钟",
+  "seekInterval60m": "60 分钟",
+  "seekIntervalSeconds": "{seconds} 秒",
+  "@seekIntervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "seekInterval10sShort": "10 秒",
+  "seekInterval30sShort": "30 秒",
+  "seekInterval1mShort": "1 分钟",
+  "seekInterval10mShort": "10 分钟",
+  "seekInterval30mShort": "30 分钟",
+  "seekInterval60mShort": "60 分钟",
+  "seekIntervalSetting": "跳转间隔",
+  "seekIntervalSettingHint": "快进和快退按钮每次跳转的距离",
+  "minimizePlayer": "最小化播放器",
+  "seekBarLabel": "进度条",
+  "seekHint": "上下滑动调整",
+  "nowPlaying": "正在播放",
+  "library": "音乐库",
+  "search": "搜索",
+  "settings": "设置",
+  "moreOptions": "更多选项",
+  "albumArt": "{title} 的专辑封面",
+  "@albumArt": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "announcePlayingTrack": "正在播放：{title}，演唱者 {artist}",
+  "@announcePlayingTrack": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "artist": {
+        "type": "String"
+      }
+    }
+  },
+  "announcePausedTrack": "已暂停：{title}，演唱者 {artist}",
+  "@announcePausedTrack": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "artist": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSeekPercent": "进度条，{percent}%，上下滑动调整",
+  "@announceSeekPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "announceShuffleOn": "随机播放已开启",
+  "announceShuffleOff": "随机播放已关闭",
+  "announceRepeatOff": "循环已关闭",
+  "announceRepeatAll": "列表循环",
+  "announceRepeatOne": "单曲循环",
+  "announceFavoriteOn": "已添加到收藏",
+  "announceFavoriteOff": "已从收藏移除",
+  "announceAddedToPlaylist": "已添加到播放列表",
+  "announcePlayerMinimized": "播放器已最小化",
+  "announceError": "无法播放：{title}",
+  "@announceError": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownTrack": "未知曲目",
+  "unknownArtist": "未知歌手",
+  "lyricsEmpty": "此曲目暂无歌词",
+  "lyricsHeader": "歌词",
+  "emptyLibrary": "此设备上未找到音乐。",
+  "emptySearch": "输入以搜索您的音乐库。",
+  "noResults": "没有匹配的曲目。",
+  "noFavorites": "还没有收藏的歌曲。",
+  "loadingLibrary": "正在加载音乐库…",
+  "permissionRequiredTitle": "需要音乐访问权限",
+  "permissionRequiredBody": "HarmonyPlayer 需要读取此设备上的音频文件。",
+  "grantAccessButton": "授予权限",
+  "retryButton": "重试",
+  "searchHint": "搜索歌曲、歌手或专辑",
+  "sortBy": "排序",
+  "sortByTitle": "标题",
+  "sortByArtist": "歌手",
+  "sortByAlbum": "专辑",
+  "sortByDuration": "时长",
+  "favoritesOnly": "仅收藏",
+  "trackCount": "{count, plural, =1{1 首歌曲} other{{count} 首歌曲}}",
+  "@trackCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "contentFirstOrder": "屏幕阅读器优先朗读内容而非导航",
+  "contentFirstOrderHint": "在大屏上更改屏幕阅读器的朗读顺序",
+  "favorites": "收藏",
+  "folders": "文件夹",
+  "albums": "专辑",
+  "artists": "歌手",
+  "genres": "流派",
+  "playlists": "播放列表",
+  "tracks": "歌曲",
+  "sleepTimer": "睡眠定时器",
+  "sleepTimerHint": "在设定时间后自动暂停播放",
+  "sleepTimerOff": "关闭",
+  "sleepTimerActive": "睡眠定时器：{duration}",
+  "@sleepTimerActive": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSleepTimerSet": "睡眠定时器已设置为 {duration}",
+  "@announceSleepTimerSet": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "announceSleepTimerCancelled": "睡眠定时器已取消",
+  "noFolders": "未找到包含音频文件的文件夹。",
+  "noAlbums": "未找到专辑。",
+  "noArtists": "未找到歌手。",
+  "noGenres": "未找到流派。",
+  "emptyPlaylists": "您的播放列表为空。",
+  "folderPlay": "播放文件夹",
+  "albumCount": "{count, plural, =1{1 张专辑} other{{count} 张专辑}}",
+  "@albumCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "artistCount": "{count, plural, =1{1 位歌手} other{{count} 位歌手}}",
+  "@artistCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "genreCount": "{count, plural, =1{1 个流派} other{{count} 个流派}}",
+  "@genreCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "accessibility": "无障碍",
+  "accessibilityHint": "屏幕阅读器和显示偏好",
+  "playback": "播放",
+  "playbackHint": "跳转间隔和播放偏好"
+}
