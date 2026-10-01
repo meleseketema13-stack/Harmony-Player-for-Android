@@ -360,6 +360,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessibilityHint => 'Screen reader and display preferences';
 
   @override
+  String get stateOn => 'On';
+
+  @override
+  String get stateOff => 'Off';
+
+  @override
   String get playback => 'Playback';
 
   @override

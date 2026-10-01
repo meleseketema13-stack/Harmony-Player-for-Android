@@ -12,7 +12,6 @@ import '../widgets/accessible_seek_bar.dart';
 import '../widgets/album_art.dart';
 import '../widgets/lyrics_view.dart';
 import '../widgets/player_controls.dart';
-import '../widgets/player_nav_bar.dart';
 
 /// Full-screen now-playing view (used on compact and medium viewports).
 class NowPlayingScreen extends ConsumerWidget {
@@ -33,16 +32,40 @@ class NowPlayingScreen extends ConsumerWidget {
                   horizontal: 24,
                   vertical: 16,
                 ),
-                child: NowPlayingContent(showTransport: true),
+                child: const NowPlayingContent(
+                  transportLayout: TransportLayout.full,
+                ),
               ),
       ),
     );
   }
 }
 
-/// Hero now-playing pane used by the Expanded (>= 840dp) layout. Intentionally
-/// contains no transport buttons — those stay in the persistent [PlayerNavBar]
-/// so no duplicate Play/Pause nodes exist in the semantics tree.
+/// Which transport controls a [NowPlayingContent] instance renders.
+///
+/// The player exposes five transport controls and four secondary controls in
+/// total, but never all nine in one row — two bars of buttons is exactly the
+/// clutter the unified bar was created to remove. Instead the controls are
+/// distributed so that every one stays reachable exactly once per layout.
+enum TransportLayout {
+  /// The full player screen: all five transport controls (Previous /
+  /// Jump-back / Play-Pause / Jump-forward / Next) in a single row. Reached on
+  /// every breakpoint by activating the mini bar.
+  full,
+
+  /// The tablet/foldable side pane: only the two jump buttons. The mini bar
+  /// directly beneath the pane owns Previous / Play-Pause / Next, so repeating
+  /// them here would put duplicate nodes in the semantics tree and make the
+  /// screen reader announce Play twice.
+  jumpsOnly,
+}
+
+/// Hero now-playing pane used by the Expanded (>= 840dp) layout.
+///
+/// The pane carries the jump buttons and all four secondary controls (Shuffle,
+/// Favorite, Add to playlist, Repeat); Previous / Play-Pause / Next come from the
+/// [UnifiedPlayerBar] pinned beneath it. Together that is the same nine controls
+/// the full player screen offers, with nothing duplicated.
 class NowPlayingPanel extends ConsumerWidget {
   const NowPlayingPanel({super.key});
 
@@ -59,7 +82,9 @@ class NowPlayingPanel extends ConsumerWidget {
         children: <Widget>[
           Expanded(
             child: SingleChildScrollView(
-              child: NowPlayingContent(showTransport: false),
+              child: const NowPlayingContent(
+                transportLayout: TransportLayout.jumpsOnly,
+              ),
             ),
           ),
         ],
@@ -68,11 +93,24 @@ class NowPlayingPanel extends ConsumerWidget {
   }
 }
 
-/// Shared player body: art, metadata, seek bar, secondary controls, lyrics.
+/// Shared player body: art, metadata, seek bar, transport, secondary controls,
+/// lyrics.
+///
+/// Control contract:
+///  * Mini bar ([UnifiedPlayerBar]) — Previous / Play-Pause / Next only, plus
+///    artwork and title. Activating the artwork or title opens the full player.
+///  * Full player ([NowPlayingScreen], [TransportLayout.full]) — all five
+///    transport controls, then Shuffle / Favorite / Add to playlist / Repeat.
+///  * Tablet side pane ([TransportLayout.jumpsOnly]) — the two jump buttons and
+///    the same four secondary controls, with Previous / Play-Pause / Next owned
+///    by the mini bar underneath.
 class NowPlayingContent extends ConsumerWidget {
-  const NowPlayingContent({super.key, required this.showTransport});
+  const NowPlayingContent({
+    super.key,
+    required this.transportLayout,
+  });
 
-  final bool showTransport;
+  final TransportLayout transportLayout;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -179,10 +217,14 @@ class NowPlayingContent extends ConsumerWidget {
           customActions: customActions,
         ),
         const SizedBox(height: 16),
-        if (showTransport) ...<Widget>[
-          const TransportControls(prominent: true),
-          const SizedBox(height: 8),
-        ],
+        // Both layouts render a transport row: the full player gets all five
+        // controls, the tablet pane only the two jump buttons because the mini
+        // bar beneath it already owns Previous / Play-Pause / Next.
+        TransportControls(
+          prominent: transportLayout == TransportLayout.full,
+          jumpsOnly: transportLayout == TransportLayout.jumpsOnly,
+        ),
+        const SizedBox(height: 8),
         const SecondaryControls(),
         const SizedBox(height: 32),
         const LyricsView(),

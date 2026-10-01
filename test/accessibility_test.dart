@@ -6,6 +6,8 @@ import 'package:harmony_player/l10n/generated/app_localizations.dart';
 import 'package:harmony_player/ui/widgets/accessible_seek_bar.dart';
 import 'package:harmony_player/ui/widgets/player_controls.dart';
 
+void _noop() {}
+
 Widget _wrap(Widget child) {
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -49,7 +51,6 @@ void main() {
         isEnabled: true,
         hasEnabledState: true,
         isFocusable: true,
-        hasToggledState: true,
         hasTapAction: true,
         hasFocusAction: true,
       ),
@@ -60,15 +61,50 @@ void main() {
     handle.dispose();
   });
 
-  testWidgets('PlayerButton exposes toggled state for mode buttons',
+  testWidgets('PlayerButton never exposes switch/toggled state', (tester) async {
+    // Regression guard for feedback that Android screen readers prefixed every
+    // transport button with "Switch on" / "Switch off" because the node carried
+    // SemanticsFlag.isToggled. These are action buttons, not switches.
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(_wrap(
+      const PlayerButton(
+        icon: Icons.pause,
+        label: 'Pause',
+        active: true,
+        onPressed: _noop,
+      ),
+    ));
+
+    final data = tester.getSemantics(find.byType(PlayerButton));
+
+    // matchesSemantics asserts every flag it does not list is false, so leaving
+    // hasToggledState/hasCheckedState out is itself the "no switch state"
+    // assertion.
+    expect(
+      data,
+      matchesSemantics(
+        label: 'Pause',
+        isButton: true,
+        isEnabled: true,
+        hasEnabledState: true,
+        isFocusable: true,
+        hasTapAction: true,
+        hasFocusAction: true,
+      ),
+    );
+    handle.dispose();
+  });
+
+  testWidgets('PlayerButton conveys on/off state through value, not a toggle',
       (tester) async {
     final handle = tester.ensureSemantics();
     await tester.pumpWidget(_wrap(
-      PlayerButton(
+      const PlayerButton(
         icon: Icons.shuffle,
         label: 'Shuffle',
-        toggled: true,
-        onPressed: () {},
+        active: true,
+        value: 'On',
+        onPressed: _noop,
       ),
     ));
 
@@ -76,8 +112,7 @@ void main() {
       tester.getSemantics(find.byType(PlayerButton)),
       matchesSemantics(
         label: 'Shuffle',
-        hasToggledState: true,
-        isToggled: true,
+        value: 'On',
         isButton: true,
         isEnabled: true,
         hasEnabledState: true,

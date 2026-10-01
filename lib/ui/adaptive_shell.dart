@@ -10,8 +10,7 @@ import 'pages/favorites_page.dart';
 import 'pages/library_pages.dart';
 import 'screens/now_playing_screen.dart';
 import 'widgets/main_nav_bar.dart';
-import 'widgets/mini_player.dart';
-import 'widgets/player_nav_bar.dart';
+import 'widgets/unified_player_bar.dart';
 
 /// Top-level responsive shell.
 ///
@@ -20,18 +19,21 @@ import 'widgets/player_nav_bar.dart';
 ///  * Medium  600-840dp — content column.
 ///  * Expanded   >= 840dp — content + hero now-playing/lyrics pane.
 ///
-/// Navigation is unified on every breakpoint: a persistent bottom
-/// [PlayerNavBar] holds the five transport controls only, and a separate
-/// [MainNavBar] handles page navigation (Library / Favorites / Settings).
-/// The [MiniPlayer] sits above the transport bar and expands the full
-/// now-playing screen on tap.
+/// The bottom edge carries exactly two bars: a single [UnifiedPlayerBar]
+/// (artwork + title/artist + Previous / Play-Pause / Next) and, below it, the
+/// [MainNavBar] for page navigation (Library / Favorites / Settings). The
+/// former mini-player + separate transport-bar stack was collapsed into
+/// [UnifiedPlayerBar] to halve the number of swipe stops on the bottom edge for
+/// Explore-by-Touch users, and to stop duplicate Play/Pause nodes competing for
+/// screen reader focus. Jump-back/jump-forward, the seek bar, secondary controls
+/// and lyrics live on the full now-playing screen that the bar expands to.
 ///
 /// Focus-preservation on fold/unfold: the surrounding panes change with the
-/// breakpoint, but the [MiniPlayer], [PlayerNavBar] and [MainNavBar] are
-/// always mounted as the last three children of the outer `Column` (same
-/// runtimeType, same [ValueKey], same position). When a foldable unfolds,
-/// only the `Row` above them is rebuilt, so the [Element] behind the focused
-/// Play/Pause button survives and TalkBack / Jieshuo+ never drop focus.
+/// breakpoint, but the [UnifiedPlayerBar] and [MainNavBar] are always mounted
+/// as the last two children of the outer `Column` (same runtimeType, same
+/// [ValueKey], same position). When a foldable unfolds, only the `Row` above
+/// them is rebuilt, so the [Element] behind the focused Play/Pause button
+/// survives and TalkBack / Jieshuo+ never drop focus.
 class AdaptiveShell extends ConsumerStatefulWidget {
   const AdaptiveShell({super.key});
 
@@ -69,10 +71,11 @@ class _AdaptiveShellState extends ConsumerState<AdaptiveShell> {
     final hasAudio = ref.watch(transportEnabledProvider);
     final isOnSettings = _selectedIndex == 2;
 
-    // Dynamic MiniPlayer visibility:
+    // Bottom playback bar visibility:
     // - Hidden when no audio is active
-    // - Hidden when on Settings screen (screen reader optimization)
-    final showMiniPlayer = hasAudio && !isOnSettings;
+    // - Hidden on the Settings screen, where playback controls are pure clutter
+    //   for a screen reader user adjusting preferences
+    final showPlayerBar = hasAudio && !isOnSettings;
 
     // Reading order is decoupled from visual order for screen readers.
     final navOrdinal = contentFirst ? 2 : 0;
@@ -118,20 +121,18 @@ class _AdaptiveShellState extends ConsumerState<AdaptiveShell> {
                 ),
               ),
             ),
-            // Constant elements: never move between layouts, so screen reader
-            // focus is preserved when the device unfolds.
-            MiniPlayer(
-              key: const ValueKey('harmony-mini-player'),
-              visible: showMiniPlayer,
-            ),
-            PlayerNavBar(
-              key: const ValueKey('harmony-nav-bar'),
+            // Constant element: never moves between layouts, so screen reader
+            // focus is preserved when the device unfolds. Holds both the
+            // now-playing summary and the transport controls.
+            UnifiedPlayerBar(
+              key: const ValueKey('harmony-player-bar'),
+              visible: showPlayerBar,
               ordinal: navOrdinal.toDouble(),
             ),
           ],
         ),
       ),
-      // Navigation bar at the very bottom, below the transport bar.
+      // Page navigation bar, at the very bottom, below the playback bar.
       bottomNavigationBar: MainNavBar(
         selectedIndex: _selectedIndex,
         onNavigate: (index) => setState(() => _selectedIndex = index),

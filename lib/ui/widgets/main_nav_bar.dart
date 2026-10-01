@@ -4,8 +4,8 @@ import '../../l10n/generated/app_localizations.dart';
 
 /// Primary bottom navigation bar with three tabs: Library, Favorites, Settings.
 ///
-/// This bar is separated from the transport controls (which live in
-/// [PlayerNavBar]) so navigation never clutters the playback surface.
+/// This bar is separated from the playback controls (which live in
+/// [UnifiedPlayerBar]) so navigation never clutters the playback surface.
 class MainNavBar extends StatelessWidget {
   const MainNavBar({
     super.key,

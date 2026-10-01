@@ -202,6 +202,8 @@
   },
   "accessibility": "无障碍",
   "accessibilityHint": "屏幕阅读器和显示偏好",
+  "stateOn": "开",
+  "stateOff": "关",
   "playback": "播放",
   "playbackHint": "跳转间隔和播放偏好"
 }

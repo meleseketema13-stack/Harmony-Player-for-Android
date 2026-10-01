@@ -355,6 +355,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get accessibilityHint => '屏幕阅读器和显示偏好';
 
   @override
+  String get stateOn => '开';
+
+  @override
+  String get stateOff => '关';
+
+  @override
   String get playback => '播放';
 
   @override

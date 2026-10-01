@@ -14,11 +14,18 @@ import '../../state/audio_providers.dart';
 ///
 /// Accessibility contract:
 ///  * Exactly one semantics node: the `Semantics` wrapper supplies
-///    label/button/toggled/onTap, while the `InkWell` uses
+///    label/button/enabled/onTap, while the `InkWell` uses
 ///    `excludeFromSemantics: true` so no duplicate tappable node leaks into
 ///    the tree (TalkBack/Jieshuo+ would otherwise announce the control twice).
 ///  * Hard 48x48 logical pixel minimum touch target via [A11yEngine.minTouchTarget]
 ///    — never smaller, enforced structurally rather than by convention.
+///  * Plain *action* button, never a toggle switch. The semantics node
+///    deliberately omits `SemanticsFlag.isToggled`, because Android screen
+///    readers render that flag as a checkbox/switch and prefix the label with
+///    "Switch on" / "Switch off" — noisy and wrong for a Play/Pause button.
+///    On/off state is conveyed through [label] and [value] instead, which read
+///    as plain speech ("Play", "Shuffle, On"), and [active] only drives the
+///    icon tint so sighted users keep the visual cue for free.
 ///  * Optional [CustomSemanticsAction]s surfaced in TalkBack's context menu
 ///    and Jieshuo+'s actions menu.
 class PlayerButton extends StatelessWidget {
@@ -27,7 +34,7 @@ class PlayerButton extends StatelessWidget {
     required this.icon,
     required this.label,
     this.onPressed,
-    this.toggled = false,
+    this.active = false,
     this.value,
     this.iconSize = 24,
     this.activeColor,
@@ -37,7 +44,10 @@ class PlayerButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback? onPressed;
-  final bool toggled;
+
+  /// Highlights the icon when the underlying state is on. Purely visual — it is
+  /// never exposed to the semantics tree, see the class doc comment.
+  final bool active;
   final String? value;
   final double iconSize;
   final Color? activeColor;
@@ -52,7 +62,6 @@ class PlayerButton extends StatelessWidget {
       container: true,
       button: true,
       enabled: _enabled,
-      toggled: toggled,
       label: label,
       value: value,
       onTap: _enabled ? onPressed : null,
@@ -70,7 +79,7 @@ class PlayerButton extends StatelessWidget {
               child: Icon(
                 icon,
                 size: iconSize,
-                color: toggled
+                color: active
                     ? (activeColor ?? scheme.primary)
                     : IconTheme.of(context).color,
               ),
@@ -81,12 +90,17 @@ class PlayerButton extends StatelessWidget {
     );
   }
 }
-
 /// Previous / Jump-back / Play-Pause / Jump-forward / Next.
 class TransportControls extends ConsumerWidget {
-  const TransportControls({super.key, this.prominent = false});
+  const TransportControls({super.key, this.prominent = false, this.jumpsOnly = false});
 
   final bool prominent;
+
+  /// Renders only the two jump buttons. Used by the tablet side pane, whose
+  /// Previous / Play-Pause / Next already live in the mini bar directly beneath
+  /// it — a second full transport row would put duplicate nodes in the
+  /// semantics tree and make the screen reader announce Play twice.
+  final bool jumpsOnly;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -122,36 +136,41 @@ class TransportControls extends ConsumerWidget {
       spacing: 8,
       runSpacing: 8,
       children: <Widget>[
-        PlayerButton(
-          icon: Icons.skip_previous_rounded,
-          label: l10n.previousButton,
-          onPressed:
-              enabled ? () => unawaited(handler.skipToPrevious()) : null,
-        ),
+        if (!jumpsOnly)
+          PlayerButton(
+            icon: Icons.skip_previous_rounded,
+            label: l10n.previousButton,
+            onPressed:
+                enabled ? () => unawaited(handler.skipToPrevious()) : null,
+          ),
         PlayerButton(
           icon: Icons.fast_rewind_rounded,
           label: l10n.jumpBackward(jumpLabel),
           onPressed:
               enabled ? () => unawaited(handler.jumpBackward()) : null,
         ),
-        PlayerButton(
-          icon: playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
-          label: playing ? l10n.pauseButton : l10n.playButton,
-          toggled: playing,
-          iconSize: prominent ? 36 : 28,
-          onPressed: enabled ? onPlayPause : null,
-        ),
-        PlayerButton(
-          icon: Icons.fast_forward_rounded,
-          label: l10n.jumpForward(jumpLabel),
-          onPressed:
-              enabled ? () => unawaited(handler.jumpForward()) : null,
-        ),
-        PlayerButton(
-          icon: Icons.skip_next_rounded,
-          label: l10n.nextButton,
-          onPressed: enabled ? () => unawaited(handler.skipToNext()) : null,
-        ),
+        if (!jumpsOnly) ...<Widget>[
+          PlayerButton(
+            icon: playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+            label: playing ? l10n.pauseButton : l10n.playButton,
+            active: playing,
+            iconSize: prominent ? 36 : 28,
+            onPressed: enabled ? onPlayPause : null,
+          ),
+          PlayerButton(
+            icon: Icons.fast_forward_rounded,
+            label: l10n.jumpForward(jumpLabel),
+            onPressed:
+                enabled ? () => unawaited(handler.jumpForward()) : null,
+          ),
+        ],
+        if (!jumpsOnly)
+          PlayerButton(
+            icon: Icons.skip_next_rounded,
+            label: l10n.nextButton,
+            onPressed:
+                enabled ? () => unawaited(handler.skipToNext()) : null,
+          ),
       ],
     );
   }
@@ -217,13 +236,15 @@ class SecondaryControls extends ConsumerWidget {
         PlayerButton(
           icon: Icons.shuffle_rounded,
           label: l10n.shuffleButton,
-          toggled: shuffleOn,
+          active: shuffleOn,
+          value: shuffleOn ? l10n.stateOn : l10n.stateOff,
           onPressed: enabled ? () => unawaited(toggleShuffle()) : null,
         ),
         PlayerButton(
           icon: isFavorite ? Icons.favorite_rounded : Icons.favorite_border,
           label: l10n.favoriteButton,
-          toggled: isFavorite,
+          active: isFavorite,
+          value: isFavorite ? l10n.stateOn : l10n.stateOff,
           onPressed: enabled ? () => unawaited(toggleFavorite()) : null,
         ),
         PlayerButton(
@@ -235,7 +256,7 @@ class SecondaryControls extends ConsumerWidget {
           icon: Icons.repeat_rounded,
           label: l10n.repeatButton,
           value: repeatLabel,
-          toggled: repeat != AudioServiceRepeatMode.none,
+          active: repeat != AudioServiceRepeatMode.none,
           onPressed: enabled ? () => unawaited(cycleRepeat()) : null,
         ),
       ],

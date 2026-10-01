@@ -202,6 +202,8 @@
   },
   "accessibility": "Accessibility",
   "accessibilityHint": "Screen reader and display preferences",
+  "stateOn": "On",
+  "stateOff": "Off",
   "playback": "Playback",
   "playbackHint": "Seek intervals and playback preferences"
 }

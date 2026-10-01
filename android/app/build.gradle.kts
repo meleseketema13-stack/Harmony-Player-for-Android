@@ -26,7 +26,9 @@ android {
         minSdk = 28
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
-        versionName = "0.2.0"
+        // Driven by the `version:` field in pubspec.yaml so the Android app
+        // version can never drift from the Flutter package version.
+        versionName = flutter.versionName
     }
 
     buildTypes {

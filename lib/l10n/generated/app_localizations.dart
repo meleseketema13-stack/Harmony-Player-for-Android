@@ -686,6 +686,18 @@ abstract class AppLocalizations {
   /// **'Screen reader and display preferences'**
   String get accessibilityHint;
 
+  /// No description provided for @stateOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get stateOn;
+
+  /// No description provided for @stateOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get stateOff;
+
   /// No description provided for @playback.
   ///
   /// In en, this message translates to:
